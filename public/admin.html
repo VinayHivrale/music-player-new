@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Song Requests</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #333, #555);
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      width: 100%;
+      color: #eee;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table, th, td {
+      border: 1px solid #777;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #444;
+    }
+    tr:nth-child(even) {
+      background-color: #555;
+    }
+    tr:nth-child(odd) {
+      background-color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>All Song Requests</h1>
+    <table id="requestsTable" border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Song Title</th>
+          <th>Artist</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    async function fetchSongRequests() {
+      try {
+        const response = await fetch('http://<your-api-url>:2000/admin/song-requests');
+        const data = await response.json();
+        
+        const tableBody = document.querySelector('#requestsTable tbody');
+        tableBody.innerHTML = ''; // Clear existing rows
+
+        data.forEach(request => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${request.name}</td>
+            <td>${request.email}</td>
+            <td>${request.song}</td>
+            <td>${request.artist}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error fetching song requests:', error);
+        alert('Failed to fetch song requests.');
+      }
+    }
+
+    // Fetch and display song requests when the page loads
+    window.onload = fetchSongRequests;
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Song Request Form</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #333, #555);
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Request a New Song</h1>
+    <form id="songRequestForm">
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" name="name" required>
+      
+      <label for="email">Your Email:</label>
+      <input type="email" id="email" name="email" required>
+      
+      <label for="song">Song Title:</label>
+      <input type="text" id="song" name="song" required>
+
+      <label for="artist">Artist:</label>
+      <input type="text" id="artist" name="artist" required>
+
+      <button type="submit">Request Song</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('songRequestForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const song = document.getElementById('song').value;
+      const artist = document.getElementById('artist').value;
+      
+      const requestBody = {
+        name,
+        email,
+        song,
+        artist
+      };
+
+      try {
+        const response = await fetch('http://<your-api-url>:2000/song-request', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        if (response.ok) {
+          alert('Song request submitted successfully! We will soon add your song to our playlist.');
+        } else {
+          alert('Failed to submit song request.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>
